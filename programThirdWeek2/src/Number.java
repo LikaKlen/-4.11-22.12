@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class Number {
     private final List<BigInteger> numbers;
-
     public Number(String input) {
         if (input == null || input.trim().isEmpty()) {
             throw new IllegalArgumentException("Список не может быть пустым.");
@@ -19,7 +18,6 @@ public class Number {
             throw new IllegalArgumentException("Список не должен содержать более 1000 чисел.");
         }
     }
-
     private List<BigInteger> parseNumbers(String input) {
         try {
             return Arrays.stream(input.split("\\s+"))
@@ -29,7 +27,6 @@ public class Number {
             throw new IllegalArgumentException("Список должен содержать только числа, разделенные пробелами.");
         }
     }
-
     public BigInteger getMax() {
         return numbers.stream().max(BigInteger::compareTo).orElse(BigInteger.ZERO);
     }
@@ -43,7 +40,6 @@ public class Number {
     public List<BigInteger> getSorted() {
         return numbers.stream().sorted().collect(Collectors.toList());
     }
-
     public Set<BigInteger> getUnique() {
         return new TreeSet<>(numbers);
     }

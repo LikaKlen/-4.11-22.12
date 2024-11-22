@@ -1,8 +1,6 @@
 public class Main {
     public static void main(String[] args) {
         Console ui= new Console();
-
-
         try {
             Number list1 = getValidatedNumber(ui, "Введите числа для первого списка через пробел:");
             printNumberStats(ui, list1, "Результаты для первого списка:");
@@ -18,7 +16,6 @@ public class Main {
             e.printStackTrace();
         }
     }
-
     private static Number getValidatedNumber(Console ui, String message) {
         while (true) {
             try {
@@ -29,7 +26,6 @@ public class Main {
             }
         }
     }
-
     private static void printNumberStats(Console ui, Number number, String header) {
         ui.printMessage(header);
         ui.printMessage("Максимальное число: " + number.getMax());
