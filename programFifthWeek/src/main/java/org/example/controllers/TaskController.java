@@ -18,39 +18,38 @@ import java.util.List;
 @CrossOrigin("http://localhost:8080")
 @RequestMapping("/tasks")
 public class TaskController {
-
     @Autowired
     private TaskService taskService;
-    @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private AccountService accountService;
 
-    @GetMapping("/account/{accountId}")
-    public List<Task> getTasksByAccount(@PathVariable Long accountId) {
-        return taskRepository.findByAccountId(accountId);
+    @GetMapping
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
-        return ResponseEntity.ok(taskService.save(task));
+    public Task createTask(@Valid @RequestBody Task task) {
+        return taskService.createTask(task);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
-
-        return new ResponseEntity<>(taskService.updateTask(id,task), HttpStatus.OK);
+    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task taskDetails) {
+        return taskService.updateTask(id, taskDetails);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.delete(id);
+        taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/reassign")
-    public ResponseEntity<Void> reassignTask(@RequestParam Long taskId, @RequestParam Long targetAccountId) {
+    @PutMapping("/{taskId}/reassign/{targetAccountId}")
+    public ResponseEntity<Void> reassignTask(@PathVariable Long taskId, @PathVariable Long targetAccountId) {
         taskService.reassignTask(taskId, targetAccountId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

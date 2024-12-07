@@ -18,40 +18,36 @@ import java.util.List;
 @CrossOrigin("http://localhost:8080")
 @RequestMapping("/accounts")
 public class AccountController {
-
     @Autowired
     private AccountService accountService;
 
-
     @GetMapping
     public List<Account> getAllAccounts() {
-        return accountService.findAll();
+        return accountService.getAllAccounts();
     }
-
 
     @GetMapping("/task/{taskId}")
     public List<Account> getAccountsByTask(@PathVariable Long taskId) {
         return accountService.findByTasksId(taskId);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.findById(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Account> createAccount(@Valid @RequestBody Account account) {
-        return new ResponseEntity<>(accountService.createAccount(account), HttpStatus.CREATED);
+    public Account createAccount(@Valid  @RequestBody Account account) {
+        return accountService.createAccount(account);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @Valid @RequestBody Account account) {
-        return new ResponseEntity<>(accountService.updateAccount(id, account), HttpStatus.OK);
+    public Account updateAccount(@Valid @PathVariable Long id, @RequestBody Account accountDetails) {
+        return accountService.updateAccount(id, accountDetails);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        accountService.delete(id);
+        accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
 }
