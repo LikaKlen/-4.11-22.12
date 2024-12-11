@@ -1,25 +1,19 @@
 package org.example.service;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.example.exceptions.CustomValidationException;
 import org.example.models.Account;
 import org.example.models.Task;
-import org.example.repositories.AccountRepository;
 import org.example.repositories.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-
 @Service
+@RequiredArgsConstructor
 public class TaskService {
-    @Autowired
-    private TaskRepository taskRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final TaskRepository taskRepository;
+    private final AccountService accountService;
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -51,15 +45,13 @@ public class TaskService {
     @Transactional
     public void reassignTask(Long taskId, Long targetAccountId) {
         Task task = getTaskById(taskId);
-        Account targetAccount = accountRepository.findById(targetAccountId)
-                .orElseThrow(() -> new RuntimeException("Target account not found"));
+        Account targetAccount = accountService.findById(targetAccountId);
 
         if (task.getAccount().getId().equals(targetAccountId)) {
-            throw new RuntimeException("Task is already assigned to this account");
+            throw new CustomValidationException("Task is already assigned to this account");
         }
 
         task.setAccount(targetAccount);
         taskRepository.save(task);
     }
-
 }

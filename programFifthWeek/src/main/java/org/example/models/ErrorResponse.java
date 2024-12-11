@@ -1,7 +1,5 @@
 package org.example.models;
-
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.Map;
 
